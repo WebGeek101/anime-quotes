@@ -1,23 +1,31 @@
-import logo from './logo.svg';
-import './App.css';
+import Quote from "./Components/Quote";
+import React, { useState, useEffect } from "react";
 
 function App() {
+  const [quote, setQuote] = useState({
+    anime: null,
+    character: null,
+    quote: null
+  });
+
+  const fetchQuote = () => {
+    fetch(`https://animechan.vercel.app/api/random`)
+      .then((response) => response.json())
+      .then((data) => setQuote(data));
+  };
+
+  useEffect(() => {
+    fetchQuote();
+  }, []);
+
+  const fetchNewQuote = () => {
+    fetchQuote();
+  };
+
   return (
     <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+      <Quote quote={quote} />
+      <button onClick={fetchNewQuote}>Generate</button>
     </div>
   );
 }
